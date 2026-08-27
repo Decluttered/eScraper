@@ -1,0 +1,24 @@
+{
+  "itemSummaries": [
+    {
+      "itemId": "v1|123456789|0",
+      "title": "MSI GeForce RTX 3060 12GB Gaming X Trio",
+      "itemWebUrl": "https://www.ebay.de/itm/123456789",
+      "price": {"value": "179.99", "currency": "EUR"},
+      "shippingOptions": [
+        {"shippingCost": {"value": "6.90", "currency": "EUR"}}
+      ],
+      "condition": "Gebraucht",
+      "itemLocation": {"country": "DE"}
+    },
+    {
+      "itemId": "v1|987654321|0",
+      "title": "RTX 3060 12GB defekt",
+      "itemWebUrl": "https://www.ebay.de/itm/987654321",
+      "price": {"value": "50.00", "currency": "EUR"},
+      "shippingOptions": [],
+      "condition": "Defekt",
+      "itemLocation": {"country": "DE"}
+    }
+  ]
+}
