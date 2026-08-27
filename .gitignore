@@ -1,1 +1,16 @@
 .worktrees/
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+node_modules/
+dist/
+build/
+playwright-report/
+test-results/
+*.zip
+*.crx
+*.pem
+*.key
