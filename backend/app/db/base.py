@@ -14,6 +14,8 @@ class IdMixin:
 
 
 class TimestampMixin:
+    # clock_timestamp() (not now()) so rows inserted in the same transaction still get
+    # strictly increasing values - evaluation history ordering depends on this.
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False
+        DateTime(timezone=True), server_default=func.clock_timestamp(), nullable=False
     )

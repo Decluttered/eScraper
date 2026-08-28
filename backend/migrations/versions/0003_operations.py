@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('expires_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('revoked_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('token_hash')
     )
@@ -40,7 +40,7 @@ def upgrade() -> None:
     sa.Column('last_error_message', sa.String(length=500), nullable=True),
     sa.Column('finished_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('idempotency_key')
     )
@@ -55,7 +55,7 @@ def upgrade() -> None:
     sa.Column('enabled', sa.Boolean(), nullable=False),
     sa.Column('last_polled_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('inventory_items',
@@ -67,7 +67,7 @@ def upgrade() -> None:
     sa.Column('condition_notes', sa.String(length=4000), nullable=False),
     sa.Column('disposition', sa.String(length=40), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ondelete='RESTRICT'),
     sa.ForeignKeyConstraint(['source_observation_id'], ['listing_observations.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id')
@@ -77,7 +77,7 @@ def upgrade() -> None:
     sa.Column('alert_type', sa.String(length=40), nullable=False),
     sa.Column('acknowledged_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.ForeignKeyConstraint(['evaluation_id'], ['evaluation_snapshots.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
@@ -92,7 +92,7 @@ def upgrade() -> None:
     sa.Column('notes', sa.String(length=4000), nullable=False),
     sa.Column('evidence_paths', postgresql.JSONB(astext_type=sa.Text()), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.ForeignKeyConstraint(['inventory_item_id'], ['inventory_items.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )

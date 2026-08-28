@@ -33,3 +33,8 @@ asyncio_mode = "auto"
 [tool.ruff]
 line-length = 100
 target-version = "py313"
+
+[tool.ruff.lint]
+# B008 flags `Depends(...)` in a default argument, which is the idiomatic FastAPI
+# dependency-injection pattern, not a real mutable-default bug.
+ignore = ["B008"]

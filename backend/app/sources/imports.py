@@ -1,5 +1,7 @@
 import csv
+import hashlib
 import io
+import json
 
 from pydantic import ValidationError
 
@@ -26,3 +28,8 @@ def parse_comparable_csv(
                     )
                 )
     return parsed, errors
+
+
+def hash_comparable_rows(rows: list[dict[str, object]]) -> str:
+    canonical = json.dumps(rows, sort_keys=True, separators=(",", ":"), default=str)
+    return "sha256:" + hashlib.sha256(canonical.encode()).hexdigest()

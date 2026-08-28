@@ -29,7 +29,7 @@ def upgrade() -> None:
     sa.Column('tax_profile', sa.Enum('PRIVATE', 'SMALL_BUSINESS', 'STANDARD_VAT', 'MARGIN_SCHEME', name='taxprofiletype'), nullable=False),
     sa.Column('configuration', postgresql.JSONB(astext_type=sa.Text()), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('risk_rules',
@@ -44,7 +44,7 @@ def upgrade() -> None:
     sa.Column('recommendation_cap', sa.String(length=40), nullable=True),
     sa.Column('explanation', sa.String(length=500), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('market_comparables',
@@ -61,7 +61,7 @@ def upgrade() -> None:
     sa.Column('sold_through_bps', sa.Integer(), nullable=True),
     sa.Column('source_note', sa.String(length=500), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ondelete='RESTRICT'),
     sa.PrimaryKeyConstraint('id')
     )
@@ -87,7 +87,7 @@ def upgrade() -> None:
     sa.Column('recommendation', sa.Enum('BUY', 'NEGOTIATE', 'WATCH', 'REJECT', name='recommendation'), nullable=False),
     sa.Column('reasons', postgresql.JSONB(astext_type=sa.Text()), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.ForeignKeyConstraint(['cost_profile_id'], ['cost_profiles.id'], ondelete='RESTRICT'),
     sa.ForeignKeyConstraint(['observation_id'], ['listing_observations.id'], ondelete='RESTRICT'),
     sa.PrimaryKeyConstraint('id')

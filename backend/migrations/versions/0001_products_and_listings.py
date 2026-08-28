@@ -32,7 +32,7 @@ def upgrade() -> None:
     sa.Column('ebay_product_id', sa.String(length=120), nullable=True),
     sa.Column('windows_11_status', sa.String(length=40), nullable=True),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('manufacturer', 'canonical_model', 'variant', name='uq_product_variant')
     )
@@ -51,7 +51,7 @@ def upgrade() -> None:
     sa.Column('import_method', sa.String(length=40), nullable=False),
     sa.Column('raw_metadata', postgresql.JSONB(astext_type=sa.Text()), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('source', 'external_id', 'payload_checksum', name='uq_raw_payload')
     )
@@ -68,7 +68,7 @@ def upgrade() -> None:
     sa.Column('flags', postgresql.JSONB(astext_type=sa.Text()), nullable=False),
     sa.Column('review_status', sa.String(length=40), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ondelete='RESTRICT'),
     sa.ForeignKeyConstraint(['raw_listing_id'], ['raw_listings.id'], ondelete='RESTRICT'),
     sa.PrimaryKeyConstraint('id'),
@@ -80,7 +80,7 @@ def upgrade() -> None:
     sa.Column('required_tokens', postgresql.JSONB(astext_type=sa.Text()), nullable=False),
     sa.Column('excluded_tokens', postgresql.JSONB(astext_type=sa.Text()), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('clock_timestamp()'), nullable=False),
     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('normalized_alias', name='uq_product_alias')
