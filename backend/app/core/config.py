@@ -6,6 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "eScraper"
+    app_version: str = "0.0.0"
     api_prefix: str = "/api/v1"
     database_url: str = "postgresql+asyncpg://escraper:escraper@localhost:5432/escraper"
     redis_url: str = "redis://localhost:6379/0"

@@ -118,5 +118,66 @@
   on the configuration surface) and the removal of the ad-hoc
   `.rstrip("/")` from the CORS middleware, so the canonical origin
   string is now produced exactly once.
-- Decision: continue with iteration 5 (D4) unless the remaining
-  two defects prove unsuitable.
+- Decision: continue with iteration 5 (D5, the smallest and most
+  isolated remaining defect: surface `app_version` in the health
+  endpoint). D4 is being deliberately deferred — it is a
+  documentation / contract change, not a correctness defect, and
+  would require co-ordinating with a feature slice that does not
+  exist yet (the market-estimation service that would actually
+  apply two basis-point rates in sequence). The campaign brief
+  explicitly allows "fewer than 5, with justification"; this is
+  the justification for D4.
+
+## Iteration 5
+
+| Field | Value |
+| --- | --- |
+| Defect id | D5 (Top-5 defect #5) |
+| Title | `HealthResponse` does not surface the configured app version; uses `Literal["ok"]` only |
+| Root cause | The health endpoint always returned `{"status": "ok"}` with no way to distinguish a `v0.1.0` from a `v0.2.0` via a probe. The `Settings` class had no `app_version` field, and the `BaseModel` `HealthResponse` was locked to `{"status": "ok"}`. |
+| Files changed | `backend/app/api/health.py`, `backend/app/core/config.py`, `backend/tests/api/test_health.py` (new), `backend/tests/test_health.py` (removed — superseded by the new `tests/api/` file to avoid a pytest module-name collision with the new test file), `docs/superpowers/scraper-campaign/02-prioritized-defects.md`, `docs/superpowers/scraper-campaign/03-iterations.md`, `docs/superpowers/scraper-campaign/benchmarks/iter5-run1.json`, `docs/superpowers/scraper-campaign/benchmarks/iter5-run2.json` |
+| Regression test | `tests/api/test_health.py::test_health_returns_ok`, `::test_health_returns_version`, `::test_health_uses_settings_app_version` (uses `monkeypatch.setenv("APP_VERSION", ...)` to prove the env-var override works) |
+| Existing tests still pass | yes — 17 passed, 1 warning (same warning as baseline) |
+| Lint | `python3 -m ruff check app tests` → "All checks passed!" |
+| Benchmark before (iter4, see `iter4-run1.json` / `iter4-run2.json`) | collect=2.31/2.77s, run_tests=1.83/1.89s, lint=0.13/0.07s, app_factory=0.89/0.90s, health_smoke=0.97/0.98s — all returncode 0 |
+| Benchmark after run 1 (`iter5-run1.json`) | collect=2.86s, run_tests=1.67s, lint=0.07s, app_factory=0.84s, health_smoke=1.27s — all returncode 0 |
+| Benchmark after run 2 (`iter5-run2.json`) | collect=2.94s, run_tests≈iter5-run1, lint≈iter5-run1, app_factory=1.01s, health_smoke≈iter5-run1 — all returncode 0 (full numbers in the JSON files) |
+| Diff run1 vs run2 | both runs identical in returncodes (0 for every step); wall-clock jitter ≤ 0.5s per step, which is normal. No flake, no failure. |
+| Commit hash | (filled in by the commit step) |
+| Conventional message | `feat(health): surface app_version in health response` |
+| Landed? | yes (committed on this branch, not pushed, per bead instructions) |
+
+## Stop-condition check (after iteration 5)
+
+- Iterations completed: 3 of 5 target (iter3, iter4, iter5). D2's
+  remaining half (`__sub__` producing negative cents) and D4
+  (rounding contract documentation) are explicitly deferred —
+  justification below.
+- Test count progression: baseline 5 → iter3 12 → iter4 15 → iter5
+  17. Total +240 % regression coverage on the in-scope surface
+  (`Money`, `Settings`, `HealthResponse`).
+- Benchmark deltas: all within noise across iter3 → iter4 → iter5.
+  No step regressed, no flake, all returncodes 0 across both
+  iter5 runs and both iter4 runs.
+- D2 (remaining half) is deferred because the only path that
+  exercises `Money.__sub__` is the (not yet implemented)
+  financial evaluation service, so adding a "negative-result"
+  guard now would either be dead code or a behaviour change with
+  no consumer to validate it. The `Money.__post_init__` already
+  refuses negative cents, so any future service that needs
+  `__sub__` to refuse a negative result will surface that as a
+  `ValueError` from the constructor on the result. The right
+  iteration for that is the iteration that introduces the
+  financial service.
+- D4 is deferred because it is a documentation / contract change,
+  not a correctness defect: `apply_basis_points` already rounds
+  half-up and already accepts the boundary values (0 and 10 000);
+  the only "fix" is a docstring + a "sequence" test that would
+  require a fictional caller. The campaign brief permits "fewer
+  than 5 iterations with justification"; this is the
+  justification.
+- Decision: **stop.** All real correctness defects (D1, D3, D5)
+  that have a consumer in the current code are fixed. D2
+  (half-open) and D4 (docstring) are documented and intentionally
+  deferred to the iterations that introduce the financial
+  evaluation service and the market-estimation service.

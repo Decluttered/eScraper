@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "steps": {
+    "app_factory": {
+      "elapsed_seconds": 1.2152
+    },
+    "collect": {
+      "elapsed_seconds": 2.5178
+    },
+    "health_smoke": {
+      "elapsed_seconds": 1.4445
+    },
+    "lint": {
+      "elapsed_seconds": 0.0947
+    },
+    "run_tests": {
+      "elapsed_seconds": 1.7493
+    }
+  },
+  "timestamp_utc": "2026-08-28T22:00:27.772782+00:00"
+}

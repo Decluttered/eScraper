@@ -88,7 +88,7 @@ FastAPI CORS code coerces it through `str(...).rstrip("/")`  *(resolved in iter4
   `tests/core/test_config.py::test_settings_frontend_origin_has_no_trailing_slash`.
 
 ## D4 (P4) — `apply_basis_points` is silent for zero rates and for the
-rounding convention
+rounding convention  *(deferred — not a correctness defect)*
 
 - **Where:** `backend/app/domain/money.py:11-14`.
 - **Current behavior:** the function uses `ROUND_HALF_UP`. That is
@@ -107,16 +107,21 @@ rounding convention
   "apply platform fee then VAT" and assert the documented total.
 
 ## D5 (P5) — `HealthResponse` does not surface the configured app
-version and uses `Literal["ok"]` only
+version and uses `Literal["ok"]` only  *(resolved in iter5)*
 
 - **Where:** `backend/app/api/health.py:8-13`,
   `backend/app/core/config.py:7-15`.
-- **Current behavior:** the health endpoint returns
-  `{"status": "ok"}` regardless of which release / commit is
-  running. Operations cannot distinguish a `v0.1.0` from `v0.2.0`
+- **Current behavior (was):** the health endpoint returned
+  `{"status": "ok"}` regardless of which release / commit was
+  running. Operations could not distinguish a `v0.1.0` from `v0.2.0`
   via a probe, which is required once the worker / scheduler is
   live (so that a canary can verify the right image is in front of
   Redis / Postgres).
+- **Fix (iter5):** added `app_version: str = "0.0.0"` to `Settings`
+  (overridable via the `APP_VERSION` env var thanks to the existing
+  `pydantic-settings` `BaseSettings` machinery) and added
+  `version: str` to `HealthResponse`. The endpoint now returns
+  `{"status": "ok", "version": "<app_version>"}`.
 - **Why it matters:** low for the current slice (no frontend,
   no worker, no CI), but the moment a deploy pipeline exists
   the endpoint becomes the only machine-readable signal. Adding it
