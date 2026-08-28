@@ -10,7 +10,7 @@ def create_app() -> FastAPI:
     application = FastAPI(title=settings.app_name)
     application.add_middleware(
         CORSMiddleware,
-        allow_origins=[str(settings.frontend_origin).rstrip("/")],
+        allow_origins=[str(settings.frontend_origin)],
         allow_credentials=False,
         allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
         allow_headers=["Content-Type", "X-Extension-Token"],
