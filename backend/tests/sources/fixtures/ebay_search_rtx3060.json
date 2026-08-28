@@ -1,0 +1,26 @@
+{
+  "itemSummaries": [
+    {
+      "itemId": "v1|123456789|0",
+      "title": "MSI GeForce RTX 3060 12GB Gaming X",
+      "itemWebUrl": "https://www.ebay.de/itm/123456789",
+      "price": {"value": "179.99", "currency": "EUR"},
+      "shippingOptions": [
+        {"shippingCost": {"value": "6.90", "currency": "EUR"}}
+      ],
+      "condition": "Gebraucht",
+      "itemLocation": {"postalCode": "10115", "country": "DE"}
+    },
+    {
+      "itemId": "v1|987654321|0",
+      "title": "RTX 3060 12GB defekt fuer Bastler Ersatzteil",
+      "itemWebUrl": "https://www.ebay.de/itm/987654321",
+      "price": {"value": "89.00", "currency": "EUR"},
+      "shippingOptions": [
+        {"shippingCost": {"value": "4.50", "currency": "EUR"}}
+      ],
+      "condition": "Fuer Bastler oder Repariert",
+      "itemLocation": {"postalCode": "80331", "country": "DE"}
+    }
+  ]
+}

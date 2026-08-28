@@ -37,6 +37,30 @@ services:
       redis:
         condition: service_healthy
 
+  worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: ["dramatiq", "worker.tasks"]
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: ["python", "-m", "worker.scheduler"]
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
 volumes:
   postgres_data:
   redis_data:
