@@ -63,7 +63,7 @@
   and `::test_money_rejects_bool`.
 
 ## D3 (P3) — `Settings.frontend_origin` is typed as `AnyHttpUrl` but the
-FastAPI CORS code coerces it through `str(...).rstrip("/")`
+FastAPI CORS code coerces it through `str(...).rstrip("/")`  *(resolved in iter4)*
 
 - **Where:** `backend/app/main.py:13`,
   `backend/app/core/config.py:12`.
