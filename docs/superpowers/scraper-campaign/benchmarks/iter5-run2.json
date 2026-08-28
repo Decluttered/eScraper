@@ -1,0 +1,62 @@
+{
+  "backend_dir": "/workspace/rigs/77329833-d462-4048-bcaf-5125e5f5e60f/worktrees/convoy__escraper-evidence-driven-improvement-cam__5cd45cdc__gt__toast__48c10d5d/backend",
+  "platform": "Linux-6.18.36-cloudflare-firecracker-2026.6.17-x86_64-with-glibc2.41",
+  "python": "3.13.5",
+  "schema_version": 1,
+  "steps": {
+    "app_factory": {
+      "command": "python -c 'from app.main import create_app; print(create_app)'",
+      "elapsed_seconds": 1.0139,
+      "output_tail": "<function create_app at 0x7f780d49c360>",
+      "returncode": 0
+    },
+    "collect": {
+      "command": "pytest --collect-only -q",
+      "elapsed_seconds": 2.9425,
+      "returncode": 0,
+      "tests": [
+        "tests/api/test_health.py::test_health_returns_ok",
+        "tests/api/test_health.py::test_health_returns_version",
+        "tests/api/test_health.py::test_health_uses_settings_app_version",
+        "tests/core/test_config.py::test_settings_accepts_origin_with_path",
+        "tests/core/test_config.py::test_settings_accepts_origin_with_trailing_slash",
+        "tests/core/test_config.py::test_settings_frontend_origin_has_no_trailing_slash",
+        "tests/db/test_evaluation_models.py::test_evaluation_snapshot_retains_versions_and_results",
+        "tests/db/test_listing_models.py::test_observation_links_raw_evidence_to_canonical_product",
+        "tests/db/test_operations_models.py::test_inventory_item_and_test_run_survive_reload",
+        "tests/db/test_operations_models.py::test_watchlist_persists_include_and_exclude_terms",
+        "tests/domain/test_enums.py::test_stable_external_enum_values",
+        "tests/domain/test_money.py::test_apply_basis_points_accepts_full_hundred_percent",
+        "tests/domain/test_money.py::test_apply_basis_points_accepts_zero_rate",
+        "tests/domain/test_money.py::test_apply_basis_points_rejects_bool",
+        "tests/domain/test_money.py::test_apply_basis_points_rejects_negative_rate",
+        "tests/domain/test_money.py::test_apply_basis_points_rejects_rate_above_one_hundred_percent",
+        "tests/domain/test_money.py::test_basis_points_round_half_up",
+        "tests/domain/test_money.py::test_money_addition_requires_same_currency",
+        "tests/domain/test_money.py::test_money_rejects_bool_cents",
+        "tests/domain/test_money.py::test_money_rejects_negative_cents",
+        "tests/domain/test_money.py::test_money_rejects_non_integer_cents"
+      ],
+      "tests_collected": 21
+    },
+    "health_smoke": {
+      "command": "fastapi TestClient GET /api/v1/health",
+      "elapsed_seconds": 1.1756,
+      "output_tail": "  from starlette.testclient import TestClient as TestClient  # noqa",
+      "returncode": 0
+    },
+    "lint": {
+      "command": "ruff check app tests",
+      "elapsed_seconds": 0.0673,
+      "output_tail": "All checks passed!",
+      "returncode": 0
+    },
+    "run_tests": {
+      "command": "pytest -q --ignore=tests/db",
+      "elapsed_seconds": 1.5242,
+      "output_tail": ".................                                                        [100%]\n=============================== warnings summary ===============================\n../../../../../../home/agent/.local/lib/python3.13/site-packages/fastapi/testclient.py:1\n  /home/agent/.local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n17 passed, 1 warning in 0.63s",
+      "returncode": 0
+    }
+  },
+  "timestamp_utc": "2026-08-28T21:54:11.219929+00:00"
+}
